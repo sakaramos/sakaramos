@@ -13,8 +13,6 @@
 
 </div>
 
----
-
 ## 👨‍💻 Sobre mí
 
 <table>
@@ -32,13 +30,9 @@
   </tr>
 </table>
 
----
-
 ## 🚀 Mi camino en el desarrollo de software
 
 A lo largo de mi trayectoria he pasado de construir e integrar componentes de software a involucrarme en diferentes etapas del ciclo de vida de los productos: desde el análisis de problemas y el diseño de soluciones hasta la implementación, la arquitectura, el despliegue y la coordinación del trabajo técnico.
-
----
 
 ## 💼 Experiencia profesional
 
@@ -83,8 +77,6 @@ A lo largo de mi trayectoria he pasado de construir e integrar componentes de so
   </tr>
 </table>
 
----
-
 ## 🎯 ¿Qué me interesa?
 
 <table>
@@ -111,8 +103,6 @@ A lo largo de mi trayectoria he pasado de construir e integrar componentes de so
     </td>
   </tr>
 </table>
-
----
 
 ## 🧰 Tech Stack
 
