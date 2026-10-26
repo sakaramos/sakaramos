@@ -30,6 +30,34 @@
   </tr>
 </table>
 
+
+## 🎯 ¿Qué me interesa?
+
+<table>
+  <tr>
+    <td align="center" valign="top" width="25%">
+      <h3>💻</h3>
+      <strong>Desarrollo de software</strong>
+      <p>Construir soluciones modulares, mantenibles y bien estructuradas, prestando atención a la calidad del código, la organización de los componentes y las decisiones técnicas que facilitan la evolución de los sistemas.</p>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <h3>🤖</h3>
+      <strong>Inteligencia artificial</strong>
+      <p>Explorar cómo la IA puede ampliar las capacidades del software, ayudar a resolver problemas, mejorar los procesos de desarrollo y abrir nuevas posibilidades para la creación de productos.</p>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <h3>🚀</h3>
+      <strong>Desarrollo de productos</strong>
+      <p>Participar en la evolución de ideas, desde la identificación de un problema y la comprensión de sus necesidades hasta el diseño y la construcción de soluciones útiles que aporten valor.</p>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <h3>📚</h3>
+      <strong>Aprendizaje continuo</strong>
+      <p>Profundizar en nuevas tecnologías, investigar cómo funcionan las cosas, experimentar con diferentes herramientas y convertir el conocimiento adquirido en experiencia práctica.</p>
+    </td>
+  </tr>
+</table>
+
 ## 🚀 Mi camino en el desarrollo de software
 
 A lo largo de mi trayectoria he pasado de construir e integrar componentes de software a involucrarme en diferentes etapas del ciclo de vida de los productos: desde el análisis de problemas y el diseño de soluciones hasta la implementación, la arquitectura, el despliegue y la coordinación del trabajo técnico.
@@ -74,33 +102,6 @@ A lo largo de mi trayectoria he pasado de construir e integrar componentes de so
 
   <p><a href="https://nova-dynamics.net/">Visitar Novadynamics ↗</a></p>
 </td>
-  </tr>
-</table>
-
-## 🎯 ¿Qué me interesa?
-
-<table>
-  <tr>
-    <td align="center" valign="top" width="25%">
-      <h3>💻</h3>
-      <strong>Desarrollo de software</strong>
-      <p>Construir soluciones modulares, mantenibles y bien estructuradas, prestando atención a la calidad del código, la organización de los componentes y las decisiones técnicas que facilitan la evolución de los sistemas.</p>
-    </td>
-    <td align="center" valign="top" width="25%">
-      <h3>🤖</h3>
-      <strong>Inteligencia artificial</strong>
-      <p>Explorar cómo la IA puede ampliar las capacidades del software, ayudar a resolver problemas, mejorar los procesos de desarrollo y abrir nuevas posibilidades para la creación de productos.</p>
-    </td>
-    <td align="center" valign="top" width="25%">
-      <h3>🚀</h3>
-      <strong>Desarrollo de productos</strong>
-      <p>Participar en la evolución de ideas, desde la identificación de un problema y la comprensión de sus necesidades hasta el diseño y la construcción de soluciones útiles que aporten valor.</p>
-    </td>
-    <td align="center" valign="top" width="25%">
-      <h3>📚</h3>
-      <strong>Aprendizaje continuo</strong>
-      <p>Profundizar en nuevas tecnologías, investigar cómo funcionan las cosas, experimentar con diferentes herramientas y convertir el conocimiento adquirido en experiencia práctica.</p>
-    </td>
   </tr>
 </table>
 
