@@ -32,23 +32,6 @@
   </tr>
 </table>
 
-### 📬 Datos de contacto
-
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <strong>✉️ Correo electrónico</strong>
-      <br><br>
-      andfera201@gmail.com
-    </td>
-    <td align="center" width="50%">
-      <strong>📱 Teléfono · Colombia</strong>
-      <br><br>
-      +57 317 211 6762
-    </td>
-  </tr>
-</table>
-
 ---
 
 ## 🚀 Mi camino en el desarrollo de software
