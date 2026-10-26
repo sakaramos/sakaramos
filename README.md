@@ -21,7 +21,7 @@
   <tr>
     <td width="62%" valign="top">
       <p>Soy de Colombia y mi ciudad de origen es <strong>Pitalito, Huila</strong>, una región reconocida por su tradición cafetera y la calidad de su café.</p>
-      <p>Soy desarrollador de software con más de <strong>4 años de experiencia</strong>, principalmente en el desarrollo backen</p>
+      <p>Soy desarrollador de software con más de <strong>4 años de experiencia</strong>, principalmente en el desarrollo backend</p>
       <p>Fuera de la tecnología, disfruto levantar pesas, escuchar música, leer e investigar sobre temas que despiertan mi curiosidad. </p>
     </td>
     <td width="38%" valign="top" align="center">
