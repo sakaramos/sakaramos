@@ -1,4 +1,8 @@
 
+<div align="center">
+  <img src="assets/banner.png" alt="Banner de Sakaramos" width="100%">
+</div>
+
 # Hola, soy Sakaramos
 
 Bienvenido a mi perfil de GitHub.
