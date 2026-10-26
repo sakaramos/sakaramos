@@ -1,1 +1,680 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8f7f4">
+  <meta name="description" content="Andres Ramos (sakaramos), desarrollador de software colombiano interesado en tecnología, inteligencia artificial y desarrollo de productos.">
+  <title>Andres Ramos | sakaramos</title>
+
+  <style>
+    :root {
+      --background: #f8f7f4;
+      --surface: #ffffff;
+      --text: #292a27;
+      --muted: #77786f;
+      --border: #e6e3dc;
+      --accent: #49664f;
+      --accent-light: #eaf0e8;
+      --max-width: 1000px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    /* Navegación */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(248, 247, 244, 0.94);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-size: 17px;
+      font-weight: 750;
+      letter-spacing: -0.7px;
+    }
+
+    .brand span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text);
+    }
+
+    .nav-links a.active {
+      font-weight: 650;
+    }
+
+    /* Presentación */
+
+    main {
+      padding-top: 62px;
+    }
+
+    .profile {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      align-items: start;
+      gap: 35px;
+      padding-bottom: 42px;
+    }
+
+    .profile-photo {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #eceae3;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+      font-size: clamp(30px, 5vw, 43px);
+      line-height: 1.2;
+      letter-spacing: -1.7px;
+      font-weight: 750;
+    }
+
+    .intro {
+      max-width: 690px;
+      color: #52534d;
+      font-size: 16px;
+    }
+
+    .intro p {
+      margin-bottom: 12px;
+    }
+
+    .intro strong {
+      color: var(--text);
+      font-weight: 650;
+    }
+
+    /* Enlaces sociales */
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 22px;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      font-size: 13px;
+      font-weight: 550;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .social-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Banner */
+
+    .banner {
+      position: relative;
+      height: 230px;
+      overflow: hidden;
+      margin: 0 0 58px;
+      border-radius: 8px;
+      background: #dce2d7;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center 50%;
+    }
+
+    /* Secciones */
+
+    .section {
+      padding: 0 0 53px;
+      margin-bottom: 45px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-heading {
+      margin-bottom: 25px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 5px;
+      font-size: 25px;
+      letter-spacing: -0.8px;
+      line-height: 1.35;
+    }
+
+    .section-heading p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Tecnologías */
+
+    .tech-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 38px;
+      align-items: start;
+    }
+
+    .tech-icons {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 17px;
+      padding: 20px 0;
+    }
+
+    .tech-icons img {
+      display: block;
+      width: 43px;
+      height: 43px;
+      object-fit: contain;
+    }
+
+    .tech-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tech-note strong {
+      color: var(--text);
+    }
+
+    .tech-aside {
+      padding: 23px;
+      border-left: 3px solid var(--accent);
+      background: #efeee8;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .tech-aside h3 {
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .tech-aside p {
+      margin-bottom: 0;
+      color: #62635b;
+      font-size: 14px;
+    }
+
+    /* Trayectoria */
+
+    .career {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .career-label {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .career p {
+      margin-bottom: 15px;
+      color: #55564f;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .text-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    /* Intereses */
+
+    .interests {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 34px;
+    }
+
+    .interest {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      padding: 22px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .interest-icon {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 7px;
+      background: var(--accent-light);
+      font-size: 17px;
+    }
+
+    .interest h3 {
+      margin-bottom: 5px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .interest p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* Pie de página */
+
+    footer {
+      padding: 25px 0 35px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        width: min(100% - 30px, var(--max-width));
+      }
+
+      main {
+        padding-top: 38px;
+      }
+
+      .profile {
+        grid-template-columns: 1fr;
+        gap: 21px;
+      }
+
+      .profile-photo {
+        width: 112px;
+        height: 112px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .banner {
+        height: 165px;
+        margin-bottom: 43px;
+      }
+
+      .section {
+        margin-bottom: 37px;
+        padding-bottom: 38px;
+      }
+
+      .tech-layout,
+      .career,
+      .interests {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+
+      .career {
+        gap: 10px;
+      }
+
+      .tech-aside {
+        padding: 18px;
+      }
+
+      .nav-links {
+        gap: 18px;
+      }
+
+      .footer-content {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Navegación principal">
+      <a class="brand" href="./index.html">saka<span>ramos</span></a>
+
+      <div class="nav-links">
+        <a class="active" href="./index.html" aria-current="page">Home</a>
+        <a href="./blog.html">Blog</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Presentación personal -->
+    <section class="profile" id="home">
+      <img
+        class="profile-photo"
+        src="assets/me.png"
+        alt="Foto de Andres Ramos"
+        onerror="this.onerror=null;this.src='https://github.com/sakaramos.png';"
+      >
+
+      <div>
+        <p class="eyebrow">Desarrollador de software · Colombia</p>
+        <h1>Hola, soy Andres Ramos.</h1>
+
+        <div class="intro">
+          <p>
+            Soy de Colombia y mi ciudad de origen es
+            <strong>Pitalito, Huila</strong>, una región reconocida por
+            su tradición cafetera y la calidad de su café.
+          </p>
+
+          <p>
+            Soy desarrollador de software con más de
+            <strong>4 años de experiencia</strong>, principalmente en el
+            desarrollo backend.
+          </p>
+
+          <p>
+            En el mundo del desarrollo de software me conocen como
+            <strong>sakaramos</strong>.
+          </p>
+
+          <p>
+            Fuera de la tecnología, disfruto levantar pesas, escuchar música,
+            leer e investigar sobre temas que despiertan mi curiosidad.
+          </p>
+        </div>
+
+        <div class="social-links" aria-label="Redes sociales y contacto">
+          <a class="social-link" href="https://github.com/sakaramos"
+             target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+
+          <a class="social-link" href="https://www.linkedin.com/in/sakaramos/"
+             target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+
+          <a class="social-link" href="mailto:andfera201@gmail.com">Email ↗</a>
+
+          <a class="social-link" href="https://wa.me/573172116762"
+             target="_blank" rel="noopener noreferrer">WhatsApp ↗</a>
+
+          <a class="social-link" href="https://sakaramos.github.io/sakaramos/"
+             target="_blank" rel="noopener noreferrer">Website ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Banner -->
+    <div class="banner" aria-label="Banner personal">
+      <img src="assets/banner.jpg" alt="Banner personal de sakaramos"
+           onerror="this.style.display='none';">
+    </div>
+
+    <!-- Tecnologías principales -->
+    <section class="section" id="tecnologias">
+      <div class="section-heading">
+        <h2>Tecnologías principales</h2>
+        <p>Herramientas con las que construyo soluciones de software.</p>
+      </div>
+
+      <div class="tech-layout">
+        <div>
+          <div class="tech-icons">
+            <img
+              src="https://skillicons.dev/icons?i=python"
+              alt="Python" title="Python"
+              loading="lazy"
+            >
+            <img
+              src="https://skillicons.dev/icons?i=ts"
+              alt="TypeScript" title="TypeScript"
+              loading="lazy"
+            >
+            <img
+              src="https://skillicons.dev/icons?i=postgres"
+              alt="PostgreSQL" title="PostgreSQL"
+              loading="lazy"
+            >
+            <img
+              src="https://skillicons.dev/icons?i=aws"
+              alt="AWS" title="AWS"
+              loading="lazy"
+            >
+            <img
+              src="https://skillicons.dev/icons?i=docker"
+              alt="Docker" title="Docker"
+              loading="lazy"
+            >
+          </div>
+
+          <p class="tech-note">
+            Mi enfoque está en construir software
+            <strong>útil, mantenible y bien estructurado.</strong>
+          </p>
+        </div>
+
+        <aside class="tech-aside">
+          <h3>Explorando nuevas posibilidades</h3>
+          <p>
+            También estoy explorando herramientas de inteligencia artificial
+            aplicadas al desarrollo de software, como Cursor, para experimentar
+            con nuevas formas de resolver problemas y mejorar el proceso de
+            desarrollo.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Trayectoria profesional -->
+    <section class="section" id="trayectoria">
+      <div class="section-heading">
+        <h2>Mi camino en el desarrollo</h2>
+      </div>
+
+      <div class="career">
+        <div class="career-label">Trayectoria</div>
+
+        <div>
+          <p>
+            En estos años he evolucionado desde el desarrollo de integraciones
+            y automatizaciones hasta participar en el diseño, la arquitectura
+            y la evolución de productos de software. Me interesa comprender
+            los problemas, proponer soluciones y llevarlas a producción.
+          </p>
+
+          <a class="text-link"
+             href="https://github.com/sakaramos"
+             target="_blank"
+             rel="noopener noreferrer">
+            Conoce más sobre mi experiencia en GitHub ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intereses -->
+    <section class="section" id="intereses">
+      <div class="section-heading">
+        <h2>¿Qué me interesa?</h2>
+        <p>Algunas de las áreas que despiertan mi curiosidad.</p>
+      </div>
+
+      <div class="interests">
+        <article class="interest">
+          <div class="interest-icon" aria-hidden="true">⌘</div>
+          <div>
+            <h3>Desarrollo de software</h3>
+            <p>
+              Crear soluciones modulares y mantenibles, cuidando la calidad
+              del código y las decisiones técnicas.
+            </p>
+          </div>
+        </article>
+
+        <article class="interest">
+          <div class="interest-icon" aria-hidden="true">✳</div>
+          <div>
+            <h3>Inteligencia artificial</h3>
+            <p>
+              Explorar cómo la IA puede resolver problemas, potenciar
+              herramientas y ampliar las posibilidades del software.
+            </p>
+          </div>
+        </article>
+
+        <article class="interest">
+          <div class="interest-icon" aria-hidden="true">↗</div>
+          <div>
+            <h3>Desarrollo de productos</h3>
+            <p>
+              Transformar ideas y necesidades reales en productos útiles
+              que aporten valor a las personas.
+            </p>
+          </div>
+        </article>
+
+        <article class="interest">
+          <div class="interest-icon" aria-hidden="true">⌕</div>
+          <div>
+            <h3>Aprendizaje continuo</h3>
+            <p>
+              Investigar, experimentar con nuevas tecnologías y convertir
+              lo aprendido en experiencia práctica.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <span>© <span id="year">2026</span> Andres Ramos · sakaramos</span>
+      <a href="mailto:andfera201@gmail.com">Hablemos ↗</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+
