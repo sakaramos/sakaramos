@@ -1,1 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Andres Ramos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --text: #17211d; --copy: #2a3833; --muted: #5d6b65; --line: #e4ece8; --accent: #0f6b58; --width: 860px; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #fff; color: var(--text); font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 16.5px; line-height: 1.7; }
+    a { color: var(--accent); }
+    .container { width: min(var(--width), calc(100% - 48px)); margin-inline: auto; }
+    header { border-bottom: 1px solid var(--line); }
+    nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { color: var(--text); font-weight: 600; letter-spacing: -0.03em; text-decoration: none; }
+    .nav-links { display: flex; gap: 22px; }
+    .nav-links a { color: var(--muted); font-size: 14px; text-decoration: none; }
+    .nav-links a[aria-current="page"] { color: var(--text); }
+    main { padding: 48px 0 20px; }
+    h1 { margin: 0; font-size: clamp(36px, 5vw, 44px); font-weight: 600; letter-spacing: -0.04em; line-height: 1.15; }
+    .posts { margin: 8px 0 0; padding: 0; list-style: none; }
+    .posts a { display: block; padding: 22px 0; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none; }
+    .posts h2 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.03em; }
+    .posts p { margin: 6px 0 0; color: var(--copy); }
+    .posts time, .when { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
+    .pager { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .pager a, .pager span { min-width: 36px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; color: var(--text); text-align: center; text-decoration: none; font-size: 14px; }
+    .pager a[aria-current="page"], .pager span[aria-current="page"] { border-color: var(--accent); color: var(--accent); }
+    .back { margin: 0 0 22px; }
+    .back a { color: var(--muted); text-decoration: none; }
+    .content { margin-top: 22px; color: var(--copy); }
+    .content h2 { margin: 28px 0 8px; font-size: 22px; color: var(--text); }
+    .content h3 { margin: 22px 0 8px; font-size: 18px; color: var(--text); }
+    .content p, .content ul, .content ol, .content blockquote { margin: 0 0 14px; }
+    .content ul, .content ol { padding-left: 1.2em; }
+    .content blockquote { padding-left: 14px; border-left: 3px solid var(--line); color: var(--muted); }
+    .content pre { margin: 0 0 14px; padding: 12px 14px; overflow: auto; background: #f6f8fa; border-radius: 6px; font-size: 14px; line-height: 1.5; }
+    .content code { font-family: ui-monospace, monospace; font-size: 0.92em; }
+    .content p code, .content li code { padding: 1px 4px; background: #f3f4f6; border-radius: 4px; }
+    footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 48px; padding: 18px 0 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    @media (max-width: 560px) { .container { width: calc(100% - 32px); } footer { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="container" aria-label="Navegación principal">
+      <a class="brand" href="./">sakaramos</a>
+      <div class="nav-links">
+        <a href="./">Inicio</a>
+        <a href="./blog.html" aria-current="page">Blog</a>
+      </div>
+    </nav>
+  </header>
+  <main id="blog" class="container"><h1>Blog</h1></main>
+  <footer class="container">
+    <span>Andres Ramos · Pitalito, Huila</span>
+    <span>© <span id="year">2026</span></span>
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    var blog = document.getElementById("blog");
+    var posts = [];
+    var PAGE = 10;
 
+    load().then(show);
+    window.addEventListener("hashchange", show);
+
+    function load() {
+      return discover().then(function (items) {
+        posts = items.sort(function (a, b) { return a.id - b.id; });
+      }).catch(function () {
+        posts = [];
+      });
+    }
+
+    function discover() {
+      return fetch(new URL("posts/", location.href)).then(function (response) {
+        if (!response.ok) throw new Error("sin lista");
+        return response.text();
+      }).then(function (html) {
+        var names = [];
+        html.replace(/href="([^"]+\.md)"/gi, function (_, href) {
+          var name = decodeURIComponent(href.split("/").pop());
+          if (names.indexOf(name) === -1) names.push(name);
+        });
+        if (!names.length) throw new Error("sin archivos");
+        return Promise.all(names.map(function (name) {
+          return fetch(new URL("posts/" + name, location.href)).then(function (response) {
+            return response.text();
+          }).then(function (raw) {
+            return toPost(idFromName(name), raw);
+          });
+        }));
+      }).catch(function () {
+        return probeNumbers();
+      });
+    }
+
+    function probeNumbers() {
+      var found = [];
+      var id = 1;
+      function nextBatch() {
+        var ids = [];
+        for (var offset = 0; offset < PAGE; offset += 1) ids.push(id + offset);
+        return Promise.all(ids.map(fetchNumber)).then(function (batch) {
+          for (var i = 0; i < batch.length; i += 1) {
+            if (!batch[i]) return found;
+            found.push(batch[i]);
+          }
+          id += PAGE;
+          if (id > 500) return found;
+          return nextBatch();
+        });
+      }
+      return nextBatch();
+    }
+
+    function fetchNumber(id) {
+      return fetch(new URL("posts/" + id + ".md", location.href)).then(function (response) {
+        if (response.status === 404) return null;
+        if (!response.ok) throw new Error("posts");
+        return response.text().then(function (raw) { return toPost(id, raw); });
+      });
+    }
+
+    function idFromName(name) {
+      var match = /^(\d+)/.exec(name);
+      return match ? Number(match[1]) : 0;
+    }
+
+    function toPost(id, raw) {
+      var parsed = parseFrontmatter(raw);
+      return {
+        id: id,
+        title: parsed.data.title || ("Nota " + id),
+        date: /^\d{4}-\d{2}-\d{2}$/.test(parsed.data.date || "") ? parsed.data.date : "",
+        description: parsed.data.description || "",
+        markdown: parsed.body
+      };
+    }
+
+    function show() {
+      var id = Number(decodeURIComponent(location.hash.slice(1)));
+      var post = posts.find(function (item) { return item.id === id; });
+      if (post) {
+        blog.innerHTML = article(post);
+        return;
+      }
+      var pages = Math.max(1, Math.ceil((posts.length ? posts[posts.length - 1].id : 0) / PAGE));
+      var page = currentPage();
+      if (page > pages) page = pages;
+      blog.innerHTML = list(page, pages);
+    }
+
+    function currentPage() {
+      var page = Number(new URLSearchParams(location.search).get("page") || "1");
+      return page > 0 ? page : 1;
+    }
+
+    function list(page, pages) {
+      if (!posts.length) return "<h1>Blog</h1>";
+      var start = (page - 1) * PAGE + 1;
+      var slice = posts.filter(function (post) { return post.id >= start && post.id < start + PAGE; });
+      return "<h1>Blog</h1><ul class=\"posts\">" + slice.map(function (post) {
+        return "<li><a href=\"?page=" + page + "#" + post.id + "\"><h2>" + escapeHtml(post.title) + "</h2>" +
+          (post.description ? "<p>" + escapeHtml(post.description) + "</p>" : "") +
+          (post.date ? "<time datetime=\"" + escapeHtml(post.date) + "\">" + escapeHtml(formatDate(post.date)) + "</time>" : "") +
+          "</a></li>";
+      }).join("") + "</ul>" + pager(page, pages);
+    }
+
+    function pager(page, pages) {
+      if (pages < 2) return "";
+      var html = "<nav class=\"pager\" aria-label=\"Páginas\">";
+      html += page > 1 ? "<a href=\"?page=" + (page - 1) + "\">Anterior</a>" : "<span>Anterior</span>";
+      for (var i = 1; i <= pages; i += 1) {
+        html += i === page ? "<span aria-current=\"page\">" + i + "</span>" : "<a href=\"?page=" + i + "\">" + i + "</a>";
+      }
+      html += page < pages ? "<a href=\"?page=" + (page + 1) + "\">Siguiente</a>" : "<span>Siguiente</span>";
+      return html + "</nav>";
+    }
+
+    function article(post) {
+      var page = Math.floor((post.id - 1) / PAGE) + 1;
+      return "<p class=\"back\"><a href=\"?page=" + page + "\">Volver</a></p><h1>" + escapeHtml(post.title) + "</h1>" +
+        (post.date ? "<time class=\"when\" datetime=\"" + escapeHtml(post.date) + "\">" + escapeHtml(formatDate(post.date)) + "</time>" : "") +
+        "<div class=\"content\">" + renderMarkdown(post.markdown) + "</div>";
+    }
+
+    function parseFrontmatter(raw) {
+      var text = String(raw).replace(/^\uFEFF/, "").replace(/\r\n/g, "\n");
+      var match = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
+      var data = {};
+      if (!match) return { data: data, body: text.trim() };
+      match[1].split("\n").forEach(function (line) {
+        var field = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+        if (!field) return;
+        data[field[1]] = field[2].trim().replace(/^["']|["']$/g, "");
+      });
+      return { data: data, body: text.slice(match[0].length).trim() };
+    }
+
+    function renderMarkdown(source) {
+      var lines = source.replace(/\r\n/g, "\n").split("\n");
+      var html = "";
+      var i = 0;
+      while (i < lines.length) {
+        var line = lines[i];
+        if (!line.trim()) { i += 1; continue; }
+        if (line.indexOf("```") === 0) {
+          var code = [];
+          i += 1;
+          while (i < lines.length && lines[i].indexOf("```") !== 0) { code.push(lines[i]); i += 1; }
+          i += 1;
+          html += "<pre><code>" + escapeHtml(code.join("\n")) + "</code></pre>";
+          continue;
+        }
+        var heading = /^(#{1,3}) /.exec(line);
+        if (heading) {
+          var tag = heading[1].length < 3 ? "h2" : "h3";
+          html += "<" + tag + ">" + inline(line.slice(heading[1].length + 1)) + "</" + tag + ">";
+          i += 1;
+          continue;
+        }
+        if (line.indexOf("> ") === 0) {
+          var quote = [];
+          while (i < lines.length && lines[i].indexOf("> ") === 0) { quote.push(lines[i].slice(2)); i += 1; }
+          html += "<blockquote><p>" + inline(quote.join(" ")) + "</p></blockquote>";
+          continue;
+        }
+        if (/^[-*] /.test(line)) {
+          var items = [];
+          while (i < lines.length && /^[-*] /.test(lines[i])) { items.push("<li>" + inline(lines[i].slice(2)) + "</li>"); i += 1; }
+          html += "<ul>" + items.join("") + "</ul>";
+          continue;
+        }
+        var paragraph = [];
+        while (i < lines.length && lines[i].trim() && !/^(#{1,3} |```|> |[-*] )/.test(lines[i])) { paragraph.push(lines[i]); i += 1; }
+        html += "<p>" + inline(paragraph.join(" ")) + "</p>";
+      }
+      return html;
+    }
+
+    function inline(text) {
+      return escapeHtml(text)
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href=\"$2\">$1</a>")
+        .replace(/`([^`]+)`/g, "<code>$1</code>")
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>");
+    }
+
+    function formatDate(iso) {
+      var parts = iso.split("-");
+      return new Intl.DateTimeFormat("es-CO", { day: "numeric", month: "long", year: "numeric" }).format(new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2])));
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+  </script>
+</body>
+</html>
