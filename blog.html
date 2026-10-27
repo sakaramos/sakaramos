@@ -23,11 +23,11 @@
     .nav-links a[aria-current="page"] { color: var(--text); }
     main { flex: 1; padding: 48px 0 20px; }
     h1 { margin: 0; font-size: clamp(36px, 5vw, 44px); font-weight: 600; letter-spacing: -0.04em; line-height: 1.15; }
-    .posts { display: flex; flex-direction: column; gap: 12px; margin: 28px 0 0; padding: 0; list-style: none; }
-    .posts a { display: block; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; color: inherit; text-decoration: none; }
-    .posts a:hover { background: var(--soft); border-color: #d5e6df; }
-    .posts time { display: block; color: var(--muted); font-size: 13px; }
-    .posts h2 { margin: 2px 0 0; font-size: 22px; font-weight: 600; letter-spacing: -0.03em; }
+    .posts { margin: 8px 0 0; padding: 0; list-style: none; }
+    .posts a { display: block; padding: 22px 0; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none; }
+    .posts time { display: block; color: #8b9893; font-size: 13px; font-weight: 400; }
+    .posts h2 { margin: 3px 0 0; color: var(--accent); font-size: 22px; font-weight: 600; letter-spacing: -0.03em; }
+    .posts a:hover h2 { color: #0c5748; }
     .posts p { margin: 6px 0 0; color: var(--copy); font-size: 15.5px; line-height: 1.55; }
     .pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; height: auto; gap: 8px; margin-top: 22px; }
     .pager a, .pager span { min-width: 36px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--text); text-align: center; text-decoration: none; font-size: 14px; }
@@ -36,7 +36,10 @@
     .pager a[aria-current="page"], .pager span[aria-current="page"] { border-color: var(--accent); background: var(--tint); color: var(--accent); }
     .article { width: min(680px, 100%); }
     .article h1 { font-size: clamp(34px, 5vw, 46px); }
-    .when { display: block; margin-top: 12px; color: var(--muted); font-size: 14px; }
+    .when { display: block; margin-top: 10px; color: #8b9893; font-size: 14px; font-weight: 400; }
+    .back { margin: 36px 0 0; }
+    .back a { color: var(--muted); font-size: 14px; text-decoration: none; }
+    .back a:hover { color: var(--accent); }
     .content { margin-top: 28px; color: var(--copy); font-size: 17px; line-height: 1.75; }
     .content h2 { margin: 34px 0 10px; font-size: 22px; color: var(--text); letter-spacing: -0.03em; }
     .content h3 { margin: 26px 0 8px; font-size: 18px; color: var(--text); }
@@ -208,9 +211,11 @@
     }
 
     function article(post) {
+      var page = post.id > 0 ? Math.floor((post.id - 1) / PAGE) + 1 : 1;
       return "<article class=\"article\"><h1>" + escapeHtml(post.title) + "</h1>" +
         (post.date ? "<time class=\"when\" datetime=\"" + escapeHtml(post.date) + "\">" + escapeHtml(formatDate(post.date)) + "</time>" : "") +
-        "<div class=\"content\">" + renderMarkdown(post.markdown) + "</div></article>";
+        "<div class=\"content\">" + renderMarkdown(post.markdown) + "</div>" +
+        "<p class=\"back\"><a href=\"?page=" + page + "\">Volver</a></p></article>";
     }
 
     function parseFrontmatter(raw) {
