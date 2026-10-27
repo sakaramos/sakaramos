@@ -10,7 +10,8 @@
   <style>
     :root { --text: #17211d; --copy: #2a3833; --muted: #5d6b65; --line: #e4ece8; --accent: #0f6b58; --width: 860px; }
     * { box-sizing: border-box; }
-    body { margin: 0; background: #fff; color: var(--text); font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 16.5px; line-height: 1.7; }
+    html, body { height: 100%; }
+    body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: #fff; color: var(--text); font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 16.5px; line-height: 1.7; }
     a { color: var(--accent); }
     .container { width: min(var(--width), calc(100% - 48px)); margin-inline: auto; }
     header { border-bottom: 1px solid var(--line); }
@@ -19,7 +20,7 @@
     .nav-links { display: flex; gap: 22px; }
     .nav-links a { color: var(--muted); font-size: 14px; text-decoration: none; }
     .nav-links a[aria-current="page"] { color: var(--text); }
-    main { padding: 48px 0 20px; }
+    main { flex: 1; padding: 48px 0 20px; }
     h1 { margin: 0; font-size: clamp(36px, 5vw, 44px); font-weight: 600; letter-spacing: -0.04em; line-height: 1.15; }
     .posts { margin: 8px 0 0; padding: 0; list-style: none; }
     .posts a { display: block; padding: 22px 0; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none; }
@@ -28,6 +29,7 @@
     .posts time, .when { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
     .pager { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
     .pager a, .pager span { min-width: 36px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; color: var(--text); text-align: center; text-decoration: none; font-size: 14px; }
+    .pager span { color: var(--muted); }
     .pager a[aria-current="page"], .pager span[aria-current="page"] { border-color: var(--accent); color: var(--accent); }
     .back { margin: 0 0 22px; }
     .back a { color: var(--muted); text-decoration: none; }
@@ -40,7 +42,7 @@
     .content pre { margin: 0 0 14px; padding: 12px 14px; overflow: auto; background: #f6f8fa; border-radius: 6px; font-size: 14px; line-height: 1.5; }
     .content code { font-family: ui-monospace, monospace; font-size: 0.92em; }
     .content p code, .content li code { padding: 1px 4px; background: #f3f4f6; border-radius: 4px; }
-    footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 48px; padding: 18px 0 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    footer { display: flex; justify-content: space-between; gap: 12px; margin-top: auto; padding: 18px 0 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
     @media (max-width: 560px) { .container { width: calc(100% - 32px); } footer { flex-direction: column; } }
   </style>
 </head>
@@ -70,60 +72,77 @@
 
     function load() {
       return discover().then(function (items) {
-        posts = items.sort(function (a, b) { return a.id - b.id; });
+        posts = items.filter(Boolean).sort(function (a, b) {
+          return a.id - b.id || a.name.localeCompare(b.name);
+        });
       }).catch(function () {
         posts = [];
       });
     }
 
     function discover() {
+      return listFolder().catch(listPublished);
+    }
+
+    function listFolder() {
       return fetch(new URL("posts/", location.href)).then(function (response) {
         if (!response.ok) throw new Error("sin lista");
         return response.text();
       }).then(function (html) {
         var names = [];
         html.replace(/href="([^"]+\.md)"/gi, function (_, href) {
-          var name = decodeURIComponent(href.split("/").pop());
-          if (names.indexOf(name) === -1) names.push(name);
+          var name = decodeURIComponent(href.split("/").pop().split("?")[0]);
+          if (/\.md$/i.test(name) && names.indexOf(name) === -1) names.push(name);
         });
         if (!names.length) throw new Error("sin archivos");
         return Promise.all(names.map(function (name) {
-          return fetch(new URL("posts/" + name, location.href)).then(function (response) {
-            return response.text();
-          }).then(function (raw) {
-            return toPost(idFromName(name), raw);
+          return fetch(new URL("posts/" + encodeURIComponent(name), location.href)).then(function (response) {
+            if (!response.ok) return null;
+            return response.text().then(function (raw) { return toPost(name, raw); });
           });
         }));
-      }).catch(function () {
-        return probeNumbers();
       });
     }
 
-    function probeNumbers() {
-      var found = [];
-      var id = 1;
-      function nextBatch() {
-        var ids = [];
-        for (var offset = 0; offset < PAGE; offset += 1) ids.push(id + offset);
-        return Promise.all(ids.map(fetchNumber)).then(function (batch) {
-          for (var i = 0; i < batch.length; i += 1) {
-            if (!batch[i]) return found;
-            found.push(batch[i]);
-          }
-          id += PAGE;
-          if (id > 500) return found;
-          return nextBatch();
+    function listPublished() {
+      var repo = publishedRepo();
+      if (!repo) return Promise.resolve([]);
+      return fetch("https://api.github.com/repos/" + repo + "/contents/posts").then(function (response) {
+        if (!response.ok) throw new Error("sin posts");
+        return response.json();
+      }).then(function (items) {
+        if (!Array.isArray(items)) return [];
+        var files = items.filter(function (item) {
+          return item && item.type === "file" && /\.md$/i.test(item.name) && item.download_url;
         });
-      }
-      return nextBatch();
+        return Promise.all(files.map(function (item) {
+          return fetch(item.download_url).then(function (response) {
+            if (!response.ok) return null;
+            return response.text().then(function (raw) { return toPost(item.name, raw); });
+          });
+        }));
+      });
     }
 
-    function fetchNumber(id) {
-      return fetch(new URL("posts/" + id + ".md", location.href)).then(function (response) {
-        if (response.status === 404) return null;
-        if (!response.ok) throw new Error("posts");
-        return response.text().then(function (raw) { return toPost(id, raw); });
-      });
+    function publishedRepo() {
+      var host = location.hostname;
+      if (!/\.github\.io$/.test(host)) return "";
+      var user = host.replace(/\.github\.io$/, "");
+      var folder = (location.pathname.split("/").filter(Boolean)[0] || "");
+      if (folder && folder.indexOf(".") === -1) return user + "/" + folder;
+      return user + "/" + user + ".github.io";
+    }
+
+    function toPost(name, raw) {
+      var parsed = parseFrontmatter(raw);
+      return {
+        id: idFromName(name),
+        name: name,
+        title: parsed.data.title || titleFromName(name),
+        date: /^\d{4}-\d{2}-\d{2}$/.test(parsed.data.date || "") ? parsed.data.date : "",
+        description: parsed.data.description || "",
+        markdown: parsed.body
+      };
     }
 
     function idFromName(name) {
@@ -131,28 +150,27 @@
       return match ? Number(match[1]) : 0;
     }
 
-    function toPost(id, raw) {
-      var parsed = parseFrontmatter(raw);
-      return {
-        id: id,
-        title: parsed.data.title || ("Nota " + id),
-        date: /^\d{4}-\d{2}-\d{2}$/.test(parsed.data.date || "") ? parsed.data.date : "",
-        description: parsed.data.description || "",
-        markdown: parsed.body
-      };
+    function titleFromName(name) {
+      return name.replace(/\.md$/i, "").replace(/^\d+-/, "").replace(/[-_]+/g, " ").trim() || name;
     }
 
     function show() {
-      var id = Number(decodeURIComponent(location.hash.slice(1)));
-      var post = posts.find(function (item) { return item.id === id; });
+      var name = decodeURIComponent(location.hash.slice(1));
+      var post = posts.find(function (item) { return item.name === name; });
       if (post) {
         blog.innerHTML = article(post);
         return;
       }
-      var pages = Math.max(1, Math.ceil((posts.length ? posts[posts.length - 1].id : 0) / PAGE));
+      var pages = pageCount();
       var page = currentPage();
       if (page > pages) page = pages;
       blog.innerHTML = list(page, pages);
+    }
+
+    function pageCount() {
+      var maxId = 0;
+      posts.forEach(function (post) { if (post.id > maxId) maxId = post.id; });
+      return Math.max(1, Math.ceil(maxId / PAGE));
     }
 
     function currentPage() {
@@ -161,19 +179,18 @@
     }
 
     function list(page, pages) {
-      if (!posts.length) return "<h1>Blog</h1>";
       var start = (page - 1) * PAGE + 1;
       var slice = posts.filter(function (post) { return post.id >= start && post.id < start + PAGE; });
-      return "<h1>Blog</h1><ul class=\"posts\">" + slice.map(function (post) {
-        return "<li><a href=\"?page=" + page + "#" + post.id + "\"><h2>" + escapeHtml(post.title) + "</h2>" +
+      var items = slice.map(function (post) {
+        return "<li><a href=\"?page=" + page + "#" + encodeURIComponent(post.name) + "\"><h2>" + escapeHtml(post.title) + "</h2>" +
           (post.description ? "<p>" + escapeHtml(post.description) + "</p>" : "") +
           (post.date ? "<time datetime=\"" + escapeHtml(post.date) + "\">" + escapeHtml(formatDate(post.date)) + "</time>" : "") +
           "</a></li>";
-      }).join("") + "</ul>" + pager(page, pages);
+      }).join("");
+      return "<h1>Blog</h1>" + (items ? "<ul class=\"posts\">" + items + "</ul>" : "") + pager(page, pages);
     }
 
     function pager(page, pages) {
-      if (pages < 2) return "";
       var html = "<nav class=\"pager\" aria-label=\"Páginas\">";
       html += page > 1 ? "<a href=\"?page=" + (page - 1) + "\">Anterior</a>" : "<span>Anterior</span>";
       for (var i = 1; i <= pages; i += 1) {
@@ -184,7 +201,7 @@
     }
 
     function article(post) {
-      var page = Math.floor((post.id - 1) / PAGE) + 1;
+      var page = post.id > 0 ? Math.floor((post.id - 1) / PAGE) + 1 : 1;
       return "<p class=\"back\"><a href=\"?page=" + page + "\">Volver</a></p><h1>" + escapeHtml(post.title) + "</h1>" +
         (post.date ? "<time class=\"when\" datetime=\"" + escapeHtml(post.date) + "\">" + escapeHtml(formatDate(post.date)) + "</time>" : "") +
         "<div class=\"content\">" + renderMarkdown(post.markdown) + "</div>";
