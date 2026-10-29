@@ -30,6 +30,24 @@
 </table>
 
 
+## 📝 Últimos artículos
+
+Comparto aprendizajes, conceptos y experiencias sobre desarrollo de software, arquitectura backend, tecnologías cloud y IA.
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>Gestión de secretos y variables de entorno en AWS System Manager Parameter Store</h3>
+      <p>Conceptos y guía sobre variables de entorno y secretos: Aprende qué son, por qué son fundamentales para la seguridad y cómo gestionarlos correctamente en AWS.</p>
+      <a href="https://github.com/sakaramos/sakaramos/blob/main/posts/Gestion-de-secretos-y-variables-de-entorno-en-AWS-System-Manager-Parameter-Store.md">Leer artículo →</a>
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <a href="RUTA_DE_TODOS_LOS_ARTICULOS">Ver todos los artículos →</a>
+</p>
+
 ## 🎯 ¿Qué me interesa?
 
 <table>
