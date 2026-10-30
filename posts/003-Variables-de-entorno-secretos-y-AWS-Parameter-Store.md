@@ -1,5 +1,6 @@
 ---
 title: Variables de entorno, secretos y AWS Parameter Store
+date: 2026-10-29
 tags:
   - variables-de-entorno
   - secretos
