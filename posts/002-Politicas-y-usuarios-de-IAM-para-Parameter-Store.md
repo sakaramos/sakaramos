@@ -6,6 +6,7 @@ tags:
   - iam
   - parameter-store
   - permisos
+description: Configura un usuario y una política de IAM para que un proyecto de software use Parameter Store.
 ---
 
 # Políticas y usuarios de IAM para Parameter Store
