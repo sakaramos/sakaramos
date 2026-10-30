@@ -56,33 +56,6 @@
   </tr>
 </table>
 
-## 📝 Date un paseo por mis artículos
-
-Comparto aprendizajes, conceptos y experiencias sobre desarrollo de software, arquitectura backend, tecnologías cloud y IA.
-
-<table>
-  <tr>
-    <td width="33%" valign="top">
-      <h3>Variables de entorno, secretos y AWS Parameter Store</h3>
-      <p>Describe las variables de entorno, los secretos y AWS Parameter Store dentro de un proyecto de software.</p>
-      <a href="https://github.com/sakaramos/sakaramos/blob/main/posts/003-Variables-de-entorno-secretos-y-AWS-Parameter-Store.md">Leer artículo →</a>
-    </td>
-    <td width="33%" valign="top">
-      <h3>Políticas y usuarios de IAM para Parameter Store</h3>
-      <p>Configura un usuario y una política de IAM para que un proyecto de software use Parameter Store.</p>
-      <a href="https://github.com/sakaramos/sakaramos/blob/main/posts/002-Politicas-y-usuarios-de-IAM-para-Parameter-Store.md">Leer artículo →</a>
-    </td>
-    <td width="33%" valign="top">
-      <h3>Configurar un usuario de AWS en tu máquina</h3>
-      <p>Configura las credenciales de un usuario de AWS en tu máquina con AWS CLI.</p>
-      <a href="https://github.com/sakaramos/sakaramos/blob/main/posts/001-Configurar-un-usuario-de-AWS-en-tu-m%C3%A1quina.md">Leer artículo →</a>
-    </td>
-  </tr>
-</table>
-
-<p align="center">
-  <a href="https://github.com/sakaramos/sakaramos/tree/main/posts">Ver todos los artículos →</a>
-</p>
 
 ## 🚀 Mi camino en el desarrollo de software
 
