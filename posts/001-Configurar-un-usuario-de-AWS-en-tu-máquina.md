@@ -5,6 +5,7 @@ tags:
   - aws
   - aws-cli
   - credenciales
+description: Configura las credenciales de un usuario de AWS en tu máquina con AWS CLI.
 ---
 
 # Configurar un usuario de AWS en tu máquina
