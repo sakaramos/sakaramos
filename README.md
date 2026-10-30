@@ -67,6 +67,11 @@ Comparto aprendizajes, conceptos y experiencias sobre desarrollo de software, ar
       <p>Describe las variables de entorno, los secretos y AWS Parameter Store dentro de un proyecto de software.</p>
       <a href="https://github.com/sakaramos/sakaramos/blob/main/posts/Variables-de-entorno-secretos-y-AWS-Parameter-Store.md">Leer artículo →</a>
     </td>
+    <td width="50%" valign="top">
+      <h3>Políticas y usuarios de IAM para Parameter Store</h3>
+      <p>Configura un usuario y una política de IAM para que un proyecto de software use Parameter Store.</p>
+      <a href="https://github.com/sakaramos/sakaramos/blob/main/posts/Politicas-y-usuarios-de-IAM-para-Parameter-Store.md">Leer artículo →</a>
+    </td>
   </tr>
 </table>
 
