@@ -1,5 +1,6 @@
 ---
 title: Políticas y usuarios de IAM para Parameter Store
+date: 2026-10-29
 tags:
   - aws
   - iam
