@@ -63,9 +63,9 @@ Comparto aprendizajes, conceptos y experiencias sobre desarrollo de software, ar
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>Gestión de secretos y variables de entorno en AWS System Manager Parameter Store</h3>
-      <p>Conceptos y guía sobre variables de entorno y secretos: Aprende qué son, por qué son fundamentales para la seguridad y cómo gestionarlos correctamente en AWS.</p>
-      <a href="https://github.com/sakaramos/sakaramos/blob/main/posts/Gestion-de-secretos-y-variables-de-entorno-en-AWS-System-Manager-Parameter-Store.md">Leer artículo →</a>
+      <h3>Variables de entorno, secretos y AWS Parameter Store</h3>
+      <p>Describe las variables de entorno, los secretos y AWS Parameter Store dentro de un proyecto de software.</p>
+      <a href="https://github.com/sakaramos/sakaramos/blob/main/posts/Variables-de-entorno-secretos-y-AWS-Parameter-Store.md">Leer artículo →</a>
     </td>
   </tr>
 </table>
