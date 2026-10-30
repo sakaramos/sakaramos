@@ -6,6 +6,7 @@ tags:
   - secretos
   - aws
   - parameter-store
+description: Describe las variables de entorno, los secretos y AWS Parameter Store dentro de un proyecto de software.
 ---
 
 ## Variable de entorno
